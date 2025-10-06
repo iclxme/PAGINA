@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Envío o Retiro - Heladería Deliciosa</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">🍦 Heladería Deliciosa</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8">
+
+                <!-- Header -->
+                <div class="row mb-4">
+                    <div class="col-12 text-center">
+                        <h1 class="display-4 text-primary">Método de Entrega</h1>
+                        <p class="lead text-muted">Elige cómo quieres recibir tu pedido</p>
+                    </div>
+                </div>
+
+                <!-- Título -->
+                <div class="row mb-4">
+                    <div class="col-12 text-center">
+                        <div class="alert alert-info">
+                            <h5 class="mb-0">🚚 ¿Cómo prefieres recibir tu helado?</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información del pedido -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card border shadow-sm">
+                            <div class="card-header bg-light fw-semibold text-center">
+                                📦 Resumen del Pedido
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-2">
+                                    <div class="col-12 col-md-6 mb-2">
+                                        <strong>Items en el Carrito:</strong><br>
+                                        <span id="cartItemsCount">0 productos</span>
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-2">
+                                        <strong>Subtotal:</strong><br>
+                                        <span>$<span id="cartSubtotal">0</span></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 text-end fw-bold">
+                                        <span class="text-muted">Total Estimado:</span>
+                                        <span class="text-primary">$<span id="cartTotal">0</span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Selección de tipo de entrega -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card border">
+                            <div class="card-header bg-secondary bg-opacity-10 text-center fw-semibold">
+                                🚚 Opciones de Entrega
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <div class="card h-100 border-success">
+                                            <div class="card-body text-center">
+                                                <div class="h1">🏪</div>
+                                                <h5>Retiro en Tienda</h5>
+                                                <p class="text-muted">Recoge tu pedido cuando quieras</p>
+                                                <p class="h4 text-success">$0</p>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="tipoEntrega" id="retiro" checked>
+                                                    <label class="form-check-label" for="retiro">
+                                                        <strong>Seleccionar Retiro</strong>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <div class="card h-100 border-primary">
+                                            <div class="card-body text-center">
+                                                <div class="h1">🚚</div>
+                                                <h5>Despacho a Domicilio</h5>
+                                                <p class="text-muted">Te lo llevamos donde estés</p>
+                                                <p class="h4 text-primary">$2.000</p>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="tipoEntrega" id="despacho">
+                                                    <label class="form-check-label" for="despacho">
+                                                        <strong>Seleccionar Despacho</strong>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Información de retiro -->
+                                <div class="row mb-3" id="pickupInfo">
+                                    <div class="col-12">
+                                        <div class="alert alert-success">
+                                            <h6>🏪 Retiro en Tienda</h6>
+                                            <p class="mb-1"><strong>Ventajas:</strong></p>
+                                            <ul class="mb-2">
+                                                <li>Sin costo de envío</li>
+                                                <li>Retiro inmediato (15-20 min)</li>
+                                                <li>Pago en efectivo o tarjeta</li>
+                                                <li>Puedes modificar tu pedido al retirar</li>
+                                            </ul>
+                                            <button class="btn btn-outline-success btn-sm" onclick="selectPickup()">Seleccionar Sucursal</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Datos de despacho -->
+                                <div class="row mb-3 d-none" id="deliveryInfo">
+                                    <div class="col-12">
+                                        <h6>📍 Dirección de Envío</h6>
+                                        <div class="row mb-3">
+                                            <div class="col-12 col-md-6 mb-3">
+                                                <label class="form-label">Calle y Número</label>
+                                                <input type="text" class="form-control" placeholder="Av. Principal 123">
+                                            </div>
+                                            <div class="col-12 col-md-6 mb-3">
+                                                <label class="form-label">Departamento/Oficina (opcional)</label>
+                                                <input type="text" class="form-control" placeholder="Depto 45">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <div class="col-12 col-md-6 mb-3">
+                                                <label class="form-label">Comuna</label>
+                                                <select class="form-select">
+                                                    <option>Santiago Centro</option>
+                                                    <option>Providencia</option>
+                                                    <option>Las Condes</option>
+                                                    <option>Ñuñoa</option>
+                                                    <option>Maipú</option>
+                                                    <option>La Florida</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 col-md-6 mb-3">
+                                                <label class="form-label">Región</label>
+                                                <input type="text" class="form-control" value="Región Metropolitana" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <div class="col-12 col-md-6 mb-3">
+                                                <label class="form-label">Código Postal</label>
+                                                <input type="text" class="form-control" placeholder="1234567">
+                                            </div>
+                                            <div class="col-12 col-md-6 mb-3">
+                                                <label class="form-label">Teléfono de Contacto</label>
+                                                <input type="tel" class="form-control" placeholder="+56 9 1234 5678">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="alert alert-info">
+                                                    <small>📦 <strong>Información de envío:</strong></small>
+                                                    <ul class="mb-0">
+                                                        <li><small>Tiempo de entrega: 45-60 minutos</small></li>
+                                                        <li><small>Horario: 10:00 - 22:00</small></li>
+                                                        <li><small>Zona de cobertura: RM</small></li>
+                                                        <li><small>Envío gratis en compras sobre $20.000</small></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <small class="text-muted">* Los tiempos pueden variar según la demanda</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cálculo de costo -->
+                <div class="row mb-4">
+                    <div class="col-12 col-md-8 col-lg-6 mx-auto">
+                        <div class="card border-success shadow-sm">
+                            <div class="card-body text-center">
+                                <div class="mb-2">
+                                    <span class="text-muted">Subtotal:</span>
+                                    <span class="fw-bold">$<span id="summarySubtotal">0</span></span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="text-muted">Costo de Envío:</span>
+                                    <span class="fw-bold">$<span id="summaryShipping">0</span></span>
+                                </div>
+                                <div class="fw-bold text-success fs-5">
+                                    <span class="text-muted">Total:</span>
+                                    <span>$<span id="summaryTotal">0</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Confirmación -->
+                <div class="row mb-4">
+                    <div class="col-12 text-center d-flex flex-wrap justify-content-center gap-3">
+                        <a href="b12_editar_carrito.html" class="btn btn-outline-secondary">Volver al Carrito</a>
+                        <button class="btn btn-primary" onclick="continueToPayment()">Continuar al Pago</button>
+                    </div>
+                </div>
+
+                <!-- Mensaje adicional -->
+                <div class="row">
+                    <div class="col-12 text-center small text-muted">
+                        <p>❄️ Tu helado viajará en contenedores térmicos para mantener su temperatura ideal</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCartSummary();
+            updateSummary();
+            setupDeliveryOptions();
+        });
+
+        function loadCartSummary() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            document.getElementById('cartItemsCount').textContent = `${itemCount} ${itemCount === 1 ? 'producto' : 'productos'}`;
+            document.getElementById('cartSubtotal').textContent = subtotal.toLocaleString();
+            document.getElementById('cartTotal').textContent = subtotal.toLocaleString();
+        }
+
+        function setupDeliveryOptions() {
+            // Mostrar/ocultar secciones según opción seleccionada
+            document.querySelectorAll('input[name="tipoEntrega"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const pickupInfo = document.getElementById('pickupInfo');
+                    const deliveryInfo = document.getElementById('deliveryInfo');
+                    
+                    if (this.id === 'retiro') {
+                        pickupInfo.classList.remove('d-none');
+                        deliveryInfo.classList.add('d-none');
+                    } else {
+                        pickupInfo.classList.add('d-none');
+                        deliveryInfo.classList.remove('d-none');
+                    }
+                    
+                    updateSummary();
+                });
+            });
+        }
+
+        function updateSummary() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const isDelivery = document.getElementById('despacho').checked;
+            const shipping = isDelivery ? (subtotal > 20000 ? 0 : 2000) : 0;
+            const total = subtotal + shipping;
+
+            document.getElementById('summarySubtotal').textContent = subtotal.toLocaleString();
+            document.getElementById('summaryShipping').textContent = shipping.toLocaleString();
+            document.getElementById('summaryTotal').textContent = total.toLocaleString();
+        }
+
+        function selectPickup() {
+            // Redirigir a página de selección de sucursal
+            window.location.href = 'b15_reserva_tienda.html';
+        }
+
+        function continueToPayment() {
+            const isDelivery = document.getElementById('despacho').checked;
+            
+            if (isDelivery) {
+                // Validar datos de envío
+                const address = document.querySelector('#deliveryInfo input[placeholder="Av. Principal 123"]').value;
+                const comuna = document.querySelector('#deliveryInfo select').value;
+                
+                if (!address || !comuna) {
+                    alert('Por favor completa todos los datos de envío');
+                    return;
+                }
+                
+                // Guardar información de envío
+                const shippingInfo = {
+                    type: 'delivery',
+                    address: address,
+                    comuna: comuna,
+                    shippingCost: document.getElementById('summaryShipping').textContent
+                };
+                localStorage.setItem('shippingInfo', JSON.stringify(shippingInfo));
+            } else {
+                // Guardar información de retiro
+                const shippingInfo = {
+                    type: 'pickup',
+                    shippingCost: 0
+                };
+                localStorage.setItem('shippingInfo', JSON.stringify(shippingInfo));
+            }
+            
+            // Redirigir a página de pago
+            window.location.href = 'b13_pago_local.html';
+        }
+    </script>
+</body>
+</html>

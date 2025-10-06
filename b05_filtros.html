@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Filtros Avanzados - Heladería Deliciosa</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .filter-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .filter-option {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .filter-option:hover {
+            background-color: #e9ecef;
+        }
+        .filter-option.active {
+            background-color: #0d6efd;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">🍦 Heladería Deliciosa</a>
+            <div class="navbar-nav ms-auto">
+                <a href="b12_editar_carrito.html" class="btn btn-outline-light position-relative">
+                    🛒 Carrito
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartBadge">0</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h1 class="display-5 text-primary">Búsqueda Avanzada</h1>
+                <p class="text-muted">Encuentra tu helado ideal con nuestros filtros</p>
+            </div>
+        </div>
+
+        <!-- Barra de búsqueda -->
+        <div class="row mb-4 justify-content-center">
+            <div class="col-12 col-md-8">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="searchInput" placeholder="Buscar por sabor, ingrediente...">
+                    <button class="btn btn-primary" onclick="searchProducts()">Buscar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de filtros -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card border shadow-sm">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <!-- Filtro por Sabor -->
+                            <div class="col-12 col-md-4">
+                                <label class="form-label fw-bold">Sabor Principal</label>
+                                <div class="filter-section">
+                                    <div class="filter-option" data-filter="sabor" data-value="all">Todos los sabores</div>
+                                    <div class="filter-option" data-filter="sabor" data-value="vainilla">Vainilla</div>
+                                    <div class="filter-option" data-filter="sabor" data-value="chocolate">Chocolate</div>
+                                    <div class="filter-option" data-filter="sabor" data-value="frutilla">Frutilla</div>
+                                    <div class="filter-option" data-filter="sabor" data-value="menta">Menta</div>
+                                    <div class="filter-option" data-filter="sabor" data-value="lucuma">Lúcuma</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Filtro por Tipo -->
+                            <div class="col-12 col-md-4">
+                                <label class="form-label fw-bold">Tipo</label>
+                                <div class="filter-section">
+                                    <div class="filter-option" data-filter="tipo" data-value="all">Todos los tipos</div>
+                                    <div class="filter-option" data-filter="tipo" data-value="cremoso">Cremoso</div>
+                                    <div class="filter-option" data-filter="tipo" data-value="frutal">Frutal</div>
+                                    <div class="filter-option" data-filter="tipo" data-value="chocolate">Chocolate</div>
+                                    <div class="filter-option" data-filter="tipo" data-value="especial">Especial</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Filtro por Tamaño -->
+                            <div class="col-12 col-md-4">
+                                <label class="form-label fw-bold">Tamaño</label>
+                                <div class="filter-section">
+                                    <div class="filter-option" data-filter="tamaño" data-value="all">Todos los tamaños</div>
+                                    <div class="filter-option" data-filter="tamaño" data-value="cono">Cono Individual</div>
+                                    <div class="filter-option" data-filter="tamaño" data-value="medio">1/2 Litro</div>
+                                    <div class="filter-option" data-filter="tamaño" data-value="litro">1 Litro</div>
+                                    <div class="filter-option" data-filter="tamaño" data-value="dos-litros">2 Litros</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botones de acción -->
+                        <div class="row mt-4">
+                            <div class="col-12 d-flex justify-content-center gap-2 flex-wrap">
+                                <button class="btn btn-primary" onclick="applyFilters()">Aplicar Filtros</button>
+                                <button class="btn btn-outline-secondary" onclick="clearFilters()">Limpiar Filtros</button>
+                                <a href="b04_catalogo.html" class="btn btn-outline-primary">Ver Catálogo Simple</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resultados -->
+        <div class="row g-4" id="resultsContainer">
+            <!-- Los resultados se cargarán aquí -->
+        </div>
+
+        <!-- Mensaje sin resultados -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="alert alert-warning text-center d-none" id="sin-resultados">
+                    <h5>No encontramos resultados</h5>
+                    <p class="mb-0">Intenta con otros filtros o términos de búsqueda.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const products = [
+            { id: 1, name: "Vainilla Premium", tipo: "cremoso", sabor: "vainilla", tamaño: ["medio", "litro"], price: 4990, image: "🍦" },
+            { id: 2, name: "Chocolate Suizo", tipo: "chocolate", sabor: "chocolate", tamaño: ["medio", "litro"], price: 5990, image: "🍫" },
+            { id: 3, name: "Frutilla Natural", tipo: "frutal", sabor: "frutilla", tamaño: ["medio", "litro"], price: 5490, image: "🍓" },
+            { id: 4, name: "Menta con Chocolate", tipo: "chocolate", sabor: "menta", tamaño: ["cono", "medio"], price: 5490, image: "🌿" },
+            { id: 5, name: "Lúcuma Tradicional", tipo: "cremoso", sabor: "lucuma", tamaño: ["litro", "dos-litros"], price: 5990, image: "🥭" },
+            { id: 6, name: "Cono Vainilla", tipo: "cremoso", sabor: "vainilla", tamaño: ["cono"], price: 1990, image: "🍦" },
+            { id: 7, name: "Combo Familiar", tipo: "especial", sabor: "mixed", tamaño: ["dos-litros"], price: 18990, image: "🎉" }
+        ];
+
+        let currentFilters = {
+            sabor: 'all',
+            tipo: 'all',
+            tamaño: 'all',
+            search: ''
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setupFilterOptions();
+            loadResults();
+            updateCartBadge();
+        });
+
+        function setupFilterOptions() {
+            // Configurar eventos para las opciones de filtro
+            document.querySelectorAll('.filter-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const filterType = this.getAttribute('data-filter');
+                    const filterValue = this.getAttribute('data-value');
+                    
+                    // Remover activo de otras opciones del mismo tipo
+                    document.querySelectorAll(`[data-filter="${filterType}"]`).forEach(opt => {
+                        opt.classList.remove('active');
+                    });
+                    
+                    // Activar la opción seleccionada
+                    this.classList.add('active');
+                    
+                    // Actualizar filtros
+                    currentFilters[filterType] = filterValue;
+                });
+            });
+
+            // Búsqueda al presionar Enter
+            document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchProducts();
+                }
+            });
+        }
+
+        function loadResults() {
+            const container = document.getElementById('resultsContainer');
+            const noResults = document.getElementById('sin-resultados');
+            container.innerHTML = '';
+            
+            let filteredProducts = products.filter(product => {
+                const saborMatch = currentFilters.sabor === 'all' || product.sabor === currentFilters.sabor;
+                const tipoMatch = currentFilters.tipo === 'all' || product.tipo === currentFilters.tipo;
+                const tamañoMatch = currentFilters.tamaño === 'all' || product.tamaño.includes(currentFilters.tamaño);
+                const searchMatch = !currentFilters.search || 
+                    product.name.toLowerCase().includes(currentFilters.search.toLowerCase());
+                
+                return saborMatch && tipoMatch && tamañoMatch && searchMatch;
+            });
+            
+            if (filteredProducts.length === 0) {
+                noResults.classList.remove('d-none');
+                return;
+            }
+            
+            noResults.classList.add('d-none');
+            
+            filteredProducts.forEach(product => {
+                const productCard = `
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body text-center">
+                                <div class="display-4 mb-3">${product.image}</div>
+                                <h5>${product.name}</h5>
+                                <p class="text-muted">${product.tipo.charAt(0).toUpperCase() + product.tipo.slice(1)} • ${product.tamaño.join(', ')}</p>
+                                <p class="fw-bold text-success">$${product.price.toLocaleString()}</p>
+                                <button class="btn btn-outline-primary" onclick="addToCart(${product.id}, '${product.name}', ${product.price})">
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += productCard;
+            });
+        }
+
+        function applyFilters() {
+            loadResults();
+        }
+
+        function clearFilters() {
+            currentFilters = {
+                sabor: 'all',
+                tipo: 'all',
+                tamaño: 'all',
+                search: ''
+            };
+            
+            document.querySelectorAll('.filter-option').forEach(opt => {
+                opt.classList.remove('active');
+                if (opt.getAttribute('data-value') === 'all') {
+                    opt.classList.add('active');
+                }
+            });
+            
+            document.getElementById('searchInput').value = '';
+            loadResults();
+        }
+
+        function searchProducts() {
+            currentFilters.search = document.getElementById('searchInput').value;
+            loadResults();
+        }
+
+        function addToCart(id, name, price) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const existingItem = cart.find(item => item.id === id);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ id, name, price, quantity: 1 });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartBadge();
+            alert(`¡${name} agregado al carrito!`);
+        }
+
+        function updateCartBadge() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartBadge').textContent = totalItems;
+        }
+    </script>
+</body>
+</html>

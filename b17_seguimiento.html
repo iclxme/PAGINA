@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Seguimiento - Heladería Deliciosa</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .tracking-step {
+            text-align: center;
+            padding: 15px;
+            position: relative;
+        }
+        .tracking-step.completed {
+            color: #198754;
+        }
+        .tracking-step.active {
+            color: #0d6efd;
+            font-weight: bold;
+        }
+        .tracking-step.pending {
+            color: #6c757d;
+        }
+        .progress-line {
+            height: 4px;
+            background: #dee2e6;
+            margin: 0 10px;
+        }
+        .progress-line.completed {
+            background: #198754;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">🍦 Heladería Deliciosa</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10">
+
+                <!-- Header -->
+                <div class="row mb-4">
+                    <div class="col-12 text-center">
+                        <h1 class="display-4 text-primary">Seguimiento del Pedido</h1>
+                        <p class="lead text-muted">Revisa el estado de tu pedido en tiempo real</p>
+                    </div>
+                </div>
+
+                <!-- Estado general del pedido -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="alert alert-info text-center shadow-sm">
+                            <h5 class="mb-2" id="orderStatus">Preparando tu pedido</h5>
+                            <p class="mb-0" id="statusDescription">Tu helado está siendo preparado con ingredientes frescos</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información del pedido -->
+                <div class="row mb-4">
+                    <div class="col-12 col-md-6">
+                        <div class="card border shadow-sm">
+                            <div class="card-header bg-light text-center fw-semibold">
+                                📋 Información del Pedido
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-2">
+                                    <div class="col-12 mb-2">
+                                        <strong>Número de Pedido:</strong><br>
+                                        <span id="trackingNumber">HD-${Date.now().toString().slice(-6)}</span>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <strong>Fecha del Pedido:</strong><br>
+                                        <span>${new Date().toLocaleDateString()}</span>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <strong>Método de Entrega:</strong><br>
+                                        <span id="deliveryMethod">Retiro en tienda</span>
+                                    </div>
+                                    <div class="col-12">
+                                        <strong>Total:</strong><br>
+                                        <span class="fw-bold text-success">$<span id="orderTotal">0</span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 mt-3 mt-md-0">
+                        <div class="card border shadow-sm">
+                            <div class="card-header bg-light text-center fw-semibold">
+                                👤 Información de Contacto
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-2">
+                                    <div class="col-12 mb-2">
+                                        <strong>Cliente:</strong><br>
+                                        <span id="customerName">Nombre del Cliente</span>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <strong>Email:</strong><br>
+                                        <span id="customerEmail">cliente@email.com</span>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <strong>Teléfono:</strong><br>
+                                        <span>+56 9 1234 5678</span>
+                                    </div>
+                                    <div class="col-12">
+                                        <strong>Dirección:</strong><br>
+                                        <span id="deliveryAddress">Calle Principal 123, Santiago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Línea de progreso -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card border shadow-sm">
+                            <div class="card-header bg-light text-center fw-semibold">
+                                📈 Progreso del Pedido
+                            </div>
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <!-- Paso 1: Confirmado -->
+                                    <div class="col tracking-step completed">
+                                        <div class="h4">✅</div>
+                                        <small>Confirmado</small>
+                                        <div class="small text-muted" id="step1Time">Hace 5 min</div>
+                                    </div>
+                                    <div class="col-1 progress-line completed"></div>
+                                    
+                                    <!-- Paso 2: En Preparación -->
+                                    <div class="col tracking-step active">
+                                        <div class="h4">👨‍🍳</div>
+                                        <small>En Preparación</small>
+                                        <div class="small text-muted" id="step2Time">En progreso</div>
+                                    </div>
+                                    <div class="col-1 progress-line"></div>
+                                    
+                                    <!-- Paso 3: Listo -->
+                                    <div class="col tracking-step pending">
+                                        <div class="h4">⏰</div>
+                                        <small>Listo</small>
+                                        <div class="small text-muted" id="step3Time">-</div>
+                                    </div>
+                                    <div class="col-1 progress-line"></div>
+                                    
+                                    <!-- Paso 4: Entregado -->
+                                    <div class="col tracking-step pending">
+                                        <div class="h4">🎉</div>
+                                        <small>Entregado</small>
+                                        <div class="small text-muted" id="step4Time">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Estado detallado del pedido -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card border shadow-sm">
+                            <div class="card-header bg-secondary bg-opacity-10 text-center fw-semibold">
+                                📝 Historial de Actualizaciones
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-12 col-md-6 mb-2">
+                                        <strong>🕒 Hora Estimada de Entrega:</strong><br>
+                                        <span id="estimatedTime">${new Date(Date.now() + 45*60*1000).toLocaleTimeString()}</span>
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-2">
+                                        <strong>👨‍🍳 Chef Asignado:</strong><br>
+                                        <span>María González</span>
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-2">
+                                        <strong>🚚 Repartidor:</strong><br>
+                                        <span id="deliveryPerson">Por asignar</span>
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-2">
+                                        <strong>📞 Contacto Repartidor:</strong><br>
+                                        <span id="deliveryPhone">-</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 text-center small text-muted">
+                                        <div>Última actualización: <span id="lastUpdate">${new Date().toLocaleTimeString()}</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mapa del seguimiento -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card border shadow-sm">
+                            <div class="card-body text-center">
+                                <div class="mb-2">
+                                    <h6>🗺️ Ubicación en Tiempo Real</h6>
+                                </div>
+                                <div class="map-placeholder p-5 bg-light border rounded">
+                                    <div class="h1">🗺️</div>
+                                    <p class="text-muted">Mapa de seguimiento en tiempo real</p>
+                                    <div class="progress mb-2">
+                                        <div class="progress-bar" role="progressbar" style="width: 40%"></div>
+                                    </div>
+                                    <small class="text-muted">Tu pedido está en camino al punto de entrega</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="row mb-4">
+                    <div class="col-12 d-flex flex-wrap justify-content-center gap-3">
+                        <button class="btn btn-outline-secondary" onclick="refreshTracking()">
+                            🔄 Actualizar
+                        </button>
+                        <button class="btn btn-primary" onclick="contactSupport()">
+                            📞 Contactar Soporte
+                        </button>
+                        <button class="btn btn-success" onclick="viewOrderDetails()">
+                            📋 Ver Detalles del Pedido
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Contacto con el repartidor -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card bg-light border">
+                            <div class="card-body text-center">
+                                <div class="row mb-2">
+                                    <div class="col-12">
+                                        <h6>🚚 ¿Necesitas contactar al repartidor?</h6>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 d-flex justify-content-center gap-2 flex-wrap">
+                                        <button class="btn btn-outline-primary" onclick="callDelivery()">
+                                            📞 Llamar al Repartidor
+                                        </button>
+                                        <button class="btn btn-outline-danger" onclick="sendMessage()">
+                                            💬 Enviar Mensaje
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Simular datos de seguimiento
+        const trackingData = {
+            status: 'preparing',
+            steps: {
+                confirmed: { completed: true, time: new Date(Date.now() - 5*60*1000) },
+                preparing: { completed: false, time: null, active: true },
+                ready: { completed: false, time: null },
+                delivered: { completed: false, time: null }
+            },
+            estimatedDelivery: new Date(Date.now() + 45*60*1000),
+            chef: 'María González',
+            deliveryPerson: null,
+            lastUpdate: new Date()
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTrackingInfo();
+            startTrackingSimulation();
+        });
+
+        function loadTrackingInfo() {
+            // Cargar información del usuario
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                document.getElementById('customerName').textContent = currentUser;
+                document.getElementById('customerEmail').textContent = currentUser + '@email.com';
+            }
+
+            // Cargar información de envío
+            const shippingInfo = JSON.parse(localStorage.getItem('shippingInfo'));
+            if (shippingInfo) {
+                document.getElementById('deliveryMethod').textContent = 
+                    shippingInfo.type === 'delivery' ? 'Despacho a domicilio' : 'Retiro en tienda';
+                
+                if (shippingInfo.type === 'delivery' && shippingInfo.address) {
+                    document.getElementById('deliveryAddress').textContent = shippingInfo.address;
+                }
+            }
+
+            // Cargar total del pedido
+            const lastOrderTotal = localStorage.getItem('lastOrderTotal');
+            if (lastOrderTotal) {
+                document.getElementById('orderTotal').textContent = parseInt(lastOrderTotal).toLocaleString();
+            }
+
+            updateTrackingDisplay();
+        }
+
+        function updateTrackingDisplay() {
+            // Actualizar estado general
+            const statusElement = document.getElementById('orderStatus');
+            const descriptionElement = document.getElementById('statusDescription');
+            
+            switch(trackingData.status) {
+                case 'confirmed':
+                    statusElement.textContent = 'Pedido Confirmado';
+                    descriptionElement.textContent = 'Hemos recibido tu pedido y lo estamos preparando';
+                    break;
+                case 'preparing':
+                    statusElement.textContent = 'En Preparación';
+                    descriptionElement.textContent = 'Tu helado está siendo preparado con ingredientes frescos';
+                    break;
+                case 'ready':
+                    statusElement.textContent = 'Listo para Entrega';
+                    descriptionElement.textContent = 'Tu pedido está listo para ser entregado';
+                    break;
+                case 'delivered':
+                    statusElement.textContent = 'Entregado';
+                    descriptionElement.textContent = '¡Disfruta de tu helado!';
+                    break;
+            }
+
+            // Actualizar tiempos de los pasos
+            document.getElementById('step1Time').textContent = 
+                trackingData.steps.confirmed.time ? `Hace ${getTimeAgo(trackingData.steps.confirmed.time)}` : '-';
+            
+            document.getElementById('step2Time').textContent = 
+                trackingData.steps.preparing.active ? 'En progreso' : 
+                trackingData.steps.preparing.time ? `Hace ${getTimeAgo(trackingData.steps.preparing.time)}` : '-';
+            
+            document.getElementById('step3Time').textContent = 
+                trackingData.steps.ready.time ? `Hace ${getTimeAgo(trackingData.steps.ready.time)}` : '-';
+            
+            document.getElementById('step4Time').textContent = 
+                trackingData.steps.delivered.time ? `Hace ${getTimeAgo(trackingData.steps.delivered.time)}` : '-';
+
+            // Actualizar hora estimada
+            document.getElementById('estimatedTime').textContent = 
+                trackingData.estimatedDelivery.toLocaleTimeString();
+
+            // Actualizar última actualización
+            document.getElementById('lastUpdate').textContent = 
+                trackingData.lastUpdate.toLocaleTimeString();
+        }
+
+        function getTimeAgo(date) {
+            const diff = Math.floor((new Date() - date) / 1000 / 60); // diferencia en minutos
+            if (diff < 1) return 'unos segundos';
+            if (diff < 60) return `${diff} min`;
+            return `${Math.floor(diff / 60)} h`;
+        }
+
+        function startTrackingSimulation() {
+            // Simular avance del pedido cada 30 segundos
+            setInterval(() => {
+                if (trackingData.status === 'confirmed') {
+                    trackingData.status = 'preparing';
+                    trackingData.steps.preparing.active = true;
+                } else if (trackingData.status === 'preparing') {
+                    trackingData.status = 'ready';
+                    trackingData.steps.preparing.completed = true;
+                    trackingData.steps.preparing.active = false;
+                    trackingData.steps.preparing.time = new Date();
+                    trackingData.steps.ready.active = true;
+                    trackingData.deliveryPerson = 'Carlos Martínez';
+                    document.getElementById('deliveryPerson').textContent = 'Carlos Martínez';
+                    document.getElementById('deliveryPhone').textContent = '+56 9 8765 4321';
+                } else if (trackingData.status === 'ready') {
+                    trackingData.status = 'delivered';
+                    trackingData.steps.ready.completed = true;
+                    trackingData.steps.ready.active = false;
+                    trackingData.steps.ready.time = new Date();
+                    trackingData.steps.delivered.completed = true;
+                    trackingData.steps.delivered.time = new Date();
+                }
+                
+                trackingData.lastUpdate = new Date();
+                updateTrackingDisplay();
+            }, 30000); // 30 segundos
+        }
+
+        function refreshTracking() {
+            trackingData.lastUpdate = new Date();
+            updateTrackingDisplay();
+            alert('✅ Información actualizada');
+        }
+
+        function contactSupport() {
+            alert('📞 Contactando al soporte...\n\nNúmero: +56 9 1234 5678\nEmail: soporte@heladeriadeliciosa.cl');
+        }
+
+        function viewOrderDetails() {
+            alert('📋 Abriendo detalles completos del pedido...');
+            // En una implementación real, esto mostraría un modal o redirigiría a otra página
+        }
+
+        function callDelivery() {
+            if (trackingData.deliveryPerson) {
+                alert(`📞 Llamando a ${trackingData.deliveryPerson}...\n\nNúmero: +56 9 8765 4321`);
+            } else {
+                alert('El repartidor aún no ha sido asignado. Por favor, intenta más tarde.');
+            }
+        }
+
+        function sendMessage() {
+            if (trackingData.deliveryPerson) {
+                const message = prompt(`💬 Escribe tu mensaje para ${trackingData.deliveryPerson}:`);
+                if (message) {
+                    alert(`✅ Mensaje enviado: "${message}"`);
+                }
+            } else {
+                alert('El repartidor aún no ha sido asignado. Por favor, intenta más tarde.');
+            }
+        }
+    </script>
+</body>
+</html>

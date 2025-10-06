@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Notificaciones - Heladería Deliciosa</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">🍦 Heladería Deliciosa</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8">
+
+                <!-- Header -->
+                <div class="row mb-4">
+                    <div class="col-12 text-center">
+                        <h1 class="display-4 text-primary">Notificaciones</h1>
+                        <p class="lead text-muted">Mantente informado sobre tus pedidos</p>
+                    </div>
+                </div>
+
+                <!-- Notificación enviada -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card border shadow-sm">
+                            <div class="card-header bg-light fw-semibold text-center">
+                                📤 Notificación Enviada
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-12 text-center">
+                                        <h6>🎉 ¡Tu pedido está listo!</h6>
+                                        <p class="text-muted">Hemos terminado de preparar tu helado personalizado</p>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-12 col-md-4 mb-2">
+                                        <strong>📋 Pedido:</strong><br>
+                                        <span>HD-789123</span>
+                                    </div>
+                                    <div class="col-12 col-md-4 mb-2">
+                                        <strong>⏰ Hora:</strong><br>
+                                        <span>${new Date().toLocaleTimeString()}</span>
+                                    </div>
+                                    <div class="col-12 col-md-4 mb-2">
+                                        <strong>📱 Estado:</strong><br>
+                                        <span class="badge bg-success">Enviado</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p class="mb-0"><small>📬 Enviado por: SMS y Email</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notificación recibida -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card border shadow-sm">
+                            <div class="card-header bg-success bg-opacity-25 fw-semibold text-center">
+                                📥 Notificación Recibida
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-12 text-center">
+                                        <h6>🚚 Tu repartidor está en camino</h6>
+                                        <p class="text-muted">Carlos llegará en aproximadamente 15 minutos</p>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-12 col-md-4 mb-2">
+                                        <strong>👤 Repartidor:</strong><br>
+                                        <span>Carlos Martínez</span>
+                                    </div>
+                                    <div class="col-12 col-md-4 mb-2">
+                                        <strong>⏰ Hora:</strong><br>
+                                        <span>${new Date(Date.now() - 10*60*1000).toLocaleTimeString()}</span>
+                                    </div>
+                                    <div class="col-12 col-md-4 mb-2">
+                                        <strong>📱 Estado:</strong><br>
+                                        <span class="badge bg-info">Recibido</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p class="mb-0"><small>📍 Ubicación actual: A 2.5 km de tu dirección</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notificación de retraso -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card border shadow-sm">
+                            <div class="card-header bg-warning bg-opacity-25 fw-semibold text-center">
+                                ⚠️ Notificación de Retraso
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-12 text-center">
+                                        <h6>⏳ Pequeño retraso en tu pedido</h6>
+                                        <p class="text-muted">Lamentamos el inconveniente, estamos trabajando en tu pedido</p>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-12 col-md-4 mb-2">
+                                        <strong>📋 Pedido:</strong><br>
+                                        <span>HD-456789</span>
+                                    </div>
+                                    <div class="col-12 col-md-4 mb-2">
+                                        <strong>⏰ Nueva Hora:</strong><br>
+                                        <span>${new Date(Date.now() + 30*60*1000).toLocaleTimeString()}</span>
+                                    </div>
+                                    <div class="col-12 col-md-4 mb-2">
+                                        <strong>📱 Estado:</strong><br>
+                                        <span class="badge bg-warning">Retraso</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="alert alert-info">
+                                            <small>🎁 <strong>Compensación:</strong> Te hemos aplicado un 15% de descuento en tu próxima compra. Código: RETRASO15</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configuración de notificaciones -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card border-primary">
+                            <div class="card-header bg-primary text-white text-center">
+                                <h5 class="mb-0">⚙️ Configuración de Notificaciones</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="notifSMS" checked>
+                                            <label class="form-check-label" for="notifSMS">
+                                                📱 Notificaciones por SMS
+                                            </label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="notifEmail" checked>
+                                            <label class="form-check-label" for="notifEmail">
+                                                📧 Notificaciones por Email
+                                            </label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="notifPush" checked>
+                                            <label class="form-check-label" for="notifPush">
+                                                🔔 Notificaciones Push
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="notifPromo">
+                                            <label class="form-check-label" for="notifPromo">
+                                                🎁 Notificaciones de Promociones
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="form-label">📅 Frecuencia de Notificaciones:</label>
+                                        <select class="form-select" id="notificationFrequency">
+                                            <option value="inmediato">Inmediato</option>
+                                            <option value="diario" selected>Resumen Diario</option>
+                                            <option value="semanal">Resumen Semanal</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="row mb-4">
+                    <div class="col-12 text-center d-flex flex-wrap justify-content-center gap-3">
+                        <button class="btn btn-outline-secondary" onclick="markAllAsRead()">
+                            ✅ Marcar Todo como Leído
+                        </button>
+                        <button class="btn btn-primary" onclick="saveNotificationSettings()">
+                            💾 Guardar Configuración
+                        </button>
+                        <button class="btn btn-success" onclick="testNotification()">
+                            🔔 Probar Notificación
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mensaje adicional -->
+                <div class="row">
+                    <div class="col-12 text-center small text-muted">
+                        <p>📞 ¿Problemas con las notificaciones? Contacta a soporte: +56 9 1234 5678</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNotificationSettings();
+        });
+
+        function loadNotificationSettings() {
+            const settings = JSON.parse(localStorage.getItem('notificationSettings')) || {
+                sms: true,
+                email: true,
+                push: true,
+                promo: false,
+                frequency: 'diario'
+            };
+
+            document.getElementById('notifSMS').checked = settings.sms;
+            document.getElementById('notifEmail').checked = settings.email;
+            document.getElementById('notifPush').checked = settings.push;
+            document.getElementById('notifPromo').checked = settings.promo;
+            document.getElementById('notificationFrequency').value = settings.frequency;
+        }
+
+        function saveNotificationSettings() {
+            const settings = {
+                sms: document.getElementById('notifSMS').checked,
+                email: document.getElementById('notifEmail').checked,
+                push: document.getElementById('notifPush').checked,
+                promo: document.getElementById('notifPromo').checked,
+                frequency: document.getElementById('notificationFrequency').value
+            };
+
+            localStorage.setItem('notificationSettings', JSON.stringify(settings));
+            alert('✅ Configuración de notificaciones guardada correctamente');
+        }
+
+        function markAllAsRead() {
+            // Simular marcar todas las notificaciones como leídas
+            document.querySelectorAll('.badge').forEach(badge => {
+                if (badge.classList.contains('bg-info')) {
+                    badge.classList.remove('bg-info');
+                    badge.classList.add('bg-secondary');
+                    badge.textContent = 'Leído';
+                }
+            });
+            
+            alert('✅ Todas las notificaciones marcadas como leídas');
+        }
+
+        function testNotification() {
+            const settings = JSON.parse(localStorage.getItem('notificationSettings')) || {};
+            let message = '🔔 Notificación de prueba enviada por:';
+            
+            if (settings.sms) message += '\n📱 SMS';
+            if (settings.email) message += '\n📧 Email';
+            if (settings.push) message += '\n🔔 Push';
+            
+            alert(message);
+        }
+
+        // Simular notificaciones en tiempo real
+        setInterval(() => {
+            // 10% de probabilidad de mostrar notificación aleatoria
+            if (Math.random() < 0.1) {
+                showRandomNotification();
+            }
+        }, 30000); // Cada 30 segundos
+
+        function showRandomNotification() {
+            const notifications = [
+                {
+                    type: 'info',
+                    title: '👨‍🍳 Tu pedido está en preparación',
+                    message: 'María está preparando tu helado con ingredientes frescos'
+                },
+                {
+                    type: 'success', 
+                    title: '🚚 Repartidor asignado',
+                    message: 'Carlos Martínez entregará tu pedido en 20 min'
+                },
+                {
+                    type: 'warning',
+                    title: '⏰ Recordatorio de pedido',
+                    message: 'No olvides retirar tu pedido HD-789123'
+                }
+            ];
+
+            const randomNotif = notifications[Math.floor(Math.random() * notifications.length)];
+            
+            // Crear notificación temporal
+            const notificationElement = document.createElement('div');
+            notificationElement.className = `alert alert-${randomNotif.type} alert-dismissible fade show`;
+            notificationElement.innerHTML = `
+                <strong>${randomNotif.title}</strong><br>
+                <small>${randomNotif.message}</small>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            // Insertar al inicio de las notificaciones
+            const firstCard = document.querySelector('.row.mb-4');
+            firstCard.parentNode.insertBefore(notificationElement, firstCard);
+            
+            // Auto-eliminar después de 5 segundos
+            setTimeout(() => {
+                if (notificationElement.parentNode) {
+                    notificationElement.remove();
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Mezclar Sabores - Heladería Deliciosa</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .flavor-card {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .flavor-card.selected {
+            border: 3px solid #0d6efd;
+            transform: scale(1.05);
+        }
+        .mix-preview {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            height: 100px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">🍦 Heladería Deliciosa</a>
+            <div class="navbar-nav ms-auto">
+                <a href="b12_editar_carrito.html" class="btn btn-outline-light position-relative">
+                    🛒 Carrito
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartBadge">0</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h1 class="display-4 text-primary">Crea tu Mezcla Perfecta</h1>
+                <p class="lead text-muted">Combina hasta 3 sabores en un mismo envase</p>
+            </div>
+        </div>
+
+        <!-- Descripción -->
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <div class="alert alert-info">
+                    <p class="mb-0">✨ <strong>¡Personaliza tu helado!</strong> Selecciona el tamaño y elige los sabores que quieras combinar.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Selección de tamaño del envase -->
+        <div class="row mb-4 justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+                <div class="card border shadow-sm">
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-12 text-center">
+                                <h5>Selecciona el Tamaño</h5>
+                                <p class="text-muted">Elige la capacidad de tu envase</p>
+                            </div>
+                        </div>
+                        <div class="row g-3" id="sizeSelection">
+                            <!-- Las opciones de tamaño se cargarán aquí -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Selección de sabores -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card border">
+                    <div class="card-header text-center bg-light">
+                        <h4 class="mb-0">Elige tus Sabores Favoritos</h4>
+                        <p class="mb-0 text-muted">Selecciona hasta 3 sabores para tu mezcla</p>
+                        <div class="mt-2">
+                            <span class="badge bg-info" id="selectedCount">0/3 sabores seleccionados</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3" id="flavorsContainer">
+                            <!-- Los sabores se cargarán aquí -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vista previa de la mezcla -->
+        <div class="row mb-4 justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+                <div class="card border-primary shadow-sm">
+                    <div class="card-header bg-primary text-white text-center">
+                        <h5 class="mb-0">Vista Previa de tu Mezcla</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-12 text-center">
+                                <div class="mix-preview d-flex align-items-center justify-content-center mb-3">
+                                    <span class="text-white fw-bold" id="mixPreviewText">Tu mezcla aparecerá aquí</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="mixDetails">
+                            <!-- Los detalles de la mezcla se cargarán aquí -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="row">
+            <div class="col-12 d-flex flex-wrap justify-content-center gap-3">
+                <a href="b04_catalogo.html" class="btn btn-outline-secondary">Cancelar</a>
+                <button class="btn btn-primary" id="addToCartBtn" onclick="addMixToCart()" disabled>Agregar al Carrito</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const sizes = [
+            { id: 'medio', name: '1/2 Litro', price: 5990, maxFlavors: 2 },
+            { id: 'litro', name: '1 Litro', price: 9990, maxFlavors: 3 },
+            { id: 'dos-litros', name: '2 Litros', price: 16990, maxFlavors: 3 }
+        ];
+
+        const flavors = [
+            { id: 1, name: "Vainilla Premium", color: "#FFF8E1", emoji: "🍦", price: 0 },
+            { id: 2, name: "Chocolate Suizo", color: "#5D4037", emoji: "🍫", price: 0 },
+            { id: 3, name: "Frutilla Natural", color: "#FFCDD2", emoji: "🍓", price: 0 },
+            { id: 4, name: "Menta con Chocolate", color: "#C8E6C9", emoji: "🌿", price: 500 },
+            { id: 5, name: "Lúcuma Tradicional", color: "#FFECB3", emoji: "🥭", price: 500 },
+            { id: 6, name: "Dulce de Leche", color: "#D7CCC8", emoji: "🥛", price: 0 },
+            { id: 7, name: "Frambuesa Silvestre", color: "#F8BBD0", emoji: "🫐", price: 500 },
+            { id: 8, name: "Cookies & Cream", color: "#BCAAA4", emoji: "🍪", price: 800 }
+        ];
+
+        let selectedSize = null;
+        let selectedFlavors = [];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSizeOptions();
+            loadFlavors();
+            updateCartBadge();
+        });
+
+        function loadSizeOptions() {
+            const container = document.getElementById('sizeSelection');
+            container.innerHTML = '';
+
+            sizes.forEach(size => {
+                const card = `
+                    <div class="col-12 col-md-4 text-center">
+                        <div class="card flavor-card h-100" data-size='${JSON.stringify(size)}'>
+                            <div class="card-body">
+                                <h6>${size.name}</h6>
+                                <p class="fw-bold text-primary">$${size.price.toLocaleString()}</p>
+                                <small class="text-muted">Hasta ${size.maxFlavors} sabores</small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+
+            // Agregar eventos a las tarjetas de tamaño
+            document.querySelectorAll('[data-size]').forEach(card => {
+                card.addEventListener('click', function() {
+                    document.querySelectorAll('[data-size]').forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedSize = JSON.parse(this.getAttribute('data-size'));
+                    updateMixPreview();
+                    checkAddToCartButton();
+                });
+            });
+        }
+
+        function loadFlavors() {
+            const container = document.getElementById('flavorsContainer');
+            container.innerHTML = '';
+
+            flavors.forEach(flavor => {
+                const card = `
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card flavor-card h-100" data-flavor='${JSON.stringify(flavor)}'>
+                            <div class="card-body text-center">
+                                <div class="display-4 mb-2">${flavor.emoji}</div>
+                                <h6>${flavor.name}</h6>
+                                ${flavor.price > 0 ? `<small class="text-success">+$${flavor.price}</small>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+
+            // Agregar eventos a las tarjetas de sabores
+            document.querySelectorAll('[data-flavor]').forEach(card => {
+                card.addEventListener('click', function() {
+                    const flavor = JSON.parse(this.getAttribute('data-flavor'));
+                    toggleFlavor(flavor, this);
+                });
+            });
+        }
+
+        function toggleFlavor(flavor, element) {
+            const index = selectedFlavors.findIndex(f => f.id === flavor.id);
+            
+            if (index > -1) {
+                // Remover sabor
+                selectedFlavors.splice(index, 1);
+                element.classList.remove('selected');
+            } else {
+                // Agregar sabor si no excede el límite
+                if (selectedFlavors.length < (selectedSize?.maxFlavors || 0)) {
+                    selectedFlavors.push(flavor);
+                    element.classList.add('selected');
+                } else {
+                    alert(`Solo puedes seleccionar hasta ${selectedSize?.maxFlavors || 0} sabores para este tamaño`);
+                }
+            }
+            
+            updateSelectedCount();
+            updateMixPreview();
+            checkAddToCartButton();
+        }
+
+        function updateSelectedCount() {
+            document.getElementById('selectedCount').textContent = 
+                `${selectedFlavors.length}/${selectedSize?.maxFlavors || 0} sabores seleccionados`;
+        }
+
+        function updateMixPreview() {
+            const previewText = document.getElementById('mixPreviewText');
+            const mixDetails = document.getElementById('mixDetails');
+            
+            if (!selectedSize || selectedFlavors.length === 0) {
+                previewText.textContent = 'Tu mezcla aparecerá aquí';
+                mixDetails.innerHTML = '';
+                return;
+            }
+
+            // Actualizar texto de vista previa
+            const flavorNames = selectedFlavors.map(f => f.name).join(' + ');
+            previewText.textContent = flavorNames;
+
+            // Calcular precio total
+            const basePrice = selectedSize.price;
+            const extraPrice = selectedFlavors.reduce((sum, flavor) => sum + flavor.price, 0);
+            const totalPrice = basePrice + extraPrice;
+
+            // Actualizar detalles
+            mixDetails.innerHTML = `
+                <div class="col-6">
+                    <strong>Tamaño:</strong><br>
+                    ${selectedSize.name}
+                </div>
+                <div class="col-6">
+                    <strong>Sabores:</strong><br>
+                    ${selectedFlavors.map(f => f.name).join(', ')}
+                </div>
+                <div class="col-12 mt-2 text-center">
+                    <h5 class="text-success">Total: $${totalPrice.toLocaleString()}</h5>
+                </div>
+            `;
+        }
+
+        function checkAddToCartButton() {
+            const button = document.getElementById('addToCartBtn');
+            button.disabled = !selectedSize || selectedFlavors.length === 0;
+        }
+
+        function addMixToCart() {
+            if (!selectedSize || selectedFlavors.length === 0) {
+                alert('Por favor selecciona un tamaño y al menos un sabor');
+                return;
+            }
+
+            const basePrice = selectedSize.price;
+            const extraPrice = selectedFlavors.reduce((sum, flavor) => sum + flavor.price, 0);
+            const totalPrice = basePrice + extraPrice;
+            const mixName = `Mezcla Personalizada: ${selectedFlavors.map(f => f.name).join(' + ')} - ${selectedSize.name}`;
+            
+            // Agregar al carrito
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push({
+                id: `mix-${Date.now()}`,
+                name: mixName,
+                price: totalPrice,
+                quantity: 1,
+                custom: true,
+                size: selectedSize,
+                flavors: selectedFlavors
+            });
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartBadge();
+            
+            alert(`¡${mixName} agregado al carrito!`);
+            
+            // Resetear selección
+            selectedSize = null;
+            selectedFlavors = [];
+            document.querySelectorAll('.flavor-card').forEach(card => card.classList.remove('selected'));
+            updateMixPreview();
+            checkAddToCartButton();
+        }
+
+        function updateCartBadge() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartBadge').textContent = totalItems;
+        }
+    </script>
+</body>
+</html>

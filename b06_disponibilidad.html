@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Disponibilidad - Heladería Deliciosa</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">🍦 Heladería Deliciosa</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h1 class="display-5 text-primary">Disponibilidad en Tienda</h1>
+                <p class="text-muted">Revisa stock y precios por presentación</p>
+            </div>
+        </div>
+
+        <!-- Barra de búsqueda -->
+        <div class="row mb-4 justify-content-center">
+            <div class="col-12 col-md-8">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="searchInput" placeholder="Buscar producto...">
+                    <button class="btn btn-primary" onclick="searchProducts()">Buscar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filtros de presentación -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card border shadow-sm">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-12 col-md-4">
+                                <label class="form-label">Sucursal</label>
+                                <select class="form-select" id="sucursalFilter">
+                                    <option value="all">Todas las sucursales</option>
+                                    <option value="centro">Centro</option>
+                                    <option value="norte">Norte</option>
+                                    <option value="sur">Sur</option>
+                                    <option value="este">Este</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <label class="form-label">Categoría</label>
+                                <select class="form-select" id="categoriaFilter">
+                                    <option value="all">Todas las categorías</option>
+                                    <option value="cremoso">Helados Cremosos</option>
+                                    <option value="frutal">Helados Frutales</option>
+                                    <option value="postres">Postres Helados</option>
+                                    <option value="paletas">Paletas</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-4 d-flex align-items-end">
+                                <button class="btn btn-secondary w-100" onclick="applyFilters()">Filtrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resultados de disponibilidad -->
+        <div class="row g-4 mb-4" id="availabilityResults">
+            <!-- Los resultados se cargarán aquí -->
+        </div>
+
+        <!-- Tabla comparativa -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Producto</th>
+                                <th>Presentación</th>
+                                <th>Precio</th>
+                                <th>Disponibilidad</th>
+                                <th>Sucursal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="comparisonTable">
+                            <!-- Los datos de comparación se cargarán aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mensaje de alerta -->
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-warning text-center">
+                    <small>Los precios y disponibilidad pueden variar por sucursal. Te recomendamos confirmar antes de visitar.</small>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const availabilityData = [
+            { id: 1, name: "Vainilla Premium", presentation: "1/2 Litro", price: 4990, stock: "high", sucursal: "centro" },
+            { id: 2, name: "Vainilla Premium", presentation: "1 Litro", price: 8490, stock: "medium", sucursal: "centro" },
+            { id: 3, name: "Chocolate Suizo", presentation: "1/2 Litro", price: 5490, stock: "low", sucursal: "centro" },
+            { id: 4, name: "Chocolate Suizo", presentation: "1 Litro", price: 9290, stock: "high", sucursal: "norte" },
+            { id: 5, name: "Frutilla Natural", presentation: "1/2 Litro", price: 5490, stock: "high", sucursal: "sur" },
+            { id: 6, name: "Frutilla Natural", presentation: "1 Litro", price: 9290, stock: "medium", sucursal: "este" }
+        ];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAvailabilityResults();
+            loadComparisonTable();
+        });
+
+        function loadAvailabilityResults() {
+            const container = document.getElementById('availabilityResults');
+            const sucursal = document.getElementById('sucursalFilter').value;
+            const categoria = document.getElementById('categoriaFilter').value;
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            
+            container.innerHTML = '';
+            
+            let filteredData = availabilityData.filter(item => {
+                const sucursalMatch = sucursal === 'all' || item.sucursal === sucursal;
+                const searchMatch = !search || item.name.toLowerCase().includes(search);
+                return sucursalMatch && searchMatch;
+            });
+            
+            if (filteredData.length === 0) {
+                container.innerHTML = `
+                    <div class="col-12 text-center">
+                        <div class="alert alert-info">
+                            <p>No hay productos disponibles con los filtros seleccionados.</p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            filteredData.forEach(item => {
+                const stockBadge = getStockBadge(item.stock);
+                const card = `
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-header text-center bg-light">
+                                <h5 class="mb-0">${item.name}</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-2">
+                                    <div class="col-12 text-center">
+                                        ${stockBadge}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 text-center border-end">
+                                        <small class="text-muted">Presentación</small>
+                                        <p class="fw-bold mb-0">${item.presentation}</p>
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <small class="text-muted">Precio</small>
+                                        <p class="fw-bold mb-0">$${item.price.toLocaleString()}</p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-12 text-center">
+                                        <small class="text-muted">Sucursal: ${item.sucursal.toUpperCase()}</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-center">
+                                <button class="btn btn-primary btn-sm" onclick="addToCart(${item.id}, '${item.name} - ${item.presentation}', ${item.price})">
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+        }
+
+        function loadComparisonTable() {
+            const tableBody = document.getElementById('comparisonTable');
+            tableBody.innerHTML = '';
+            
+            availabilityData.forEach(item => {
+                const stockBadge = getStockBadge(item.stock);
+                const row = `
+                    <tr>
+                        <td>${item.name}</td>
+                        <td>${item.presentation}</td>
+                        <td>$${item.price.toLocaleString()}</td>
+                        <td>${stockBadge}</td>
+                        <td>${item.sucursal.toUpperCase()}</td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        function getStockBadge(stock) {
+            const badges = {
+                'high': '<span class="badge bg-success">Disponible</span>',
+                'medium': '<span class="badge bg-warning">Stock Bajo</span>',
+                'low': '<span class="badge bg-danger">Últimas Unidades</span>'
+            };
+            return badges[stock] || '<span class="badge bg-secondary">No Disponible</span>';
+        }
+
+        function applyFilters() {
+            loadAvailabilityResults();
+        }
+
+        function searchProducts() {
+            loadAvailabilityResults();
+        }
+
+        function addToCart(id, name, price) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const existingItem = cart.find(item => item.id === id);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ id, name, price, quantity: 1 });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert(`¡${name} agregado al carrito!`);
+        }
+    </script>
+</body>
+</html>

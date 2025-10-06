@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Reserva en Tienda - Heladería Deliciosa</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">🍦 Heladería Deliciosa</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8">
+
+                <!-- Header -->
+                <div class="row mb-4">
+                    <div class="col-12 text-center">
+                        <h1 class="display-4 text-primary">Reserva en Tienda</h1>
+                        <p class="lead text-muted">Recoge tu pedido cuando quieras</p>
+                    </div>
+                </div>
+
+                <!-- Título -->
+                <div class="row mb-4">
+                    <div class="col-12 text-center">
+                        <div class="alert alert-warning">
+                            <h5 class="mb-0">🏪 Elige tu sucursal más cercana</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mensaje informativo -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="alert alert-info text-center shadow-sm">
+                            <p class="mb-0">✨ <strong>Ventajas de reservar:</strong> Evita filas, garantiza disponibilidad y paga al retirar.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detalles de la reserva -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card border shadow-sm">
+                            <div class="card-header bg-light text-center fw-bold">
+                                📦 Tu Pedido para Retiro
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-12 col-md-6 mb-2">
+                                        <strong>Productos en el Carrito:</strong><br>
+                                        <span id="cartItemsCount">0 items</span>
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-2">
+                                        <strong>Total Estimado:</strong><br>
+                                        <span class="fw-bold text-success">$<span id="cartTotal">0</span></span>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-12 col-md-6 mb-2">
+                                        <strong>Método de Pago:</strong><br>
+                                        <span>Pago en Tienda</span>
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-2">
+                                        <strong>Tiempo de Preparación:</strong><br>
+                                        <span>15-20 minutos</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 text-end fw-semibold">
+                                        <small class="text-muted">* El pago se realiza al momento del retiro</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Selección de tienda -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card border">
+                            <div class="card-header bg-secondary bg-opacity-10 text-center fw-semibold">
+                                🏪 Selecciona una Sucursal
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-12 col-md-4 mb-3">
+                                        <div class="card store-card" data-store="centro">
+                                            <div class="card-body text-center">
+                                                <h6>🏙️ Centro</h6>
+                                                <p class="small mb-1">Av. Principal 123</p>
+                                                <p class="small text-muted mb-2">Lun-Dom: 10:00-22:00</p>
+                                                <div class="store-info">
+                                                    <span class="badge bg-success">Disponible</span>
+                                                    <small class="d-block mt-1">⏱️ 15 min prep.</small>
+                                                </div>
+                                                <button class="btn btn-outline-primary btn-sm mt-2" onclick="selectStore('centro')">Seleccionar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4 mb-3">
+                                        <div class="card store-card" data-store="norte">
+                                            <div class="card-body text-center">
+                                                <h6>🏘️ Norte</h6>
+                                                <p class="small mb-1">Mall Plaza Norte</p>
+                                                <p class="small text-muted mb-2">Lun-Dom: 10:00-22:00</p>
+                                                <div class="store-info">
+                                                    <span class="badge bg-warning">Ocupado</span>
+                                                    <small class="d-block mt-1">⏱️ 25 min prep.</small>
+                                                </div>
+                                                <button class="btn btn-outline-primary btn-sm mt-2" onclick="selectStore('norte')">Seleccionar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4 mb-3">
+                                        <div class="card store-card" data-store="sur">
+                                            <div class="card-body text-center">
+                                                <h6>🏡 Sur</h6>
+                                                <p class="small mb-1">Costanera Center</p>
+                                                <p class="small text-muted mb-2">Lun-Dom: 10:00-23:00</p>
+                                                <div class="store-info">
+                                                    <span class="badge bg-success">Disponible</span>
+                                                    <small class="d-block mt-1">⏱️ 20 min prep.</small>
+                                                </div>
+                                                <button class="btn btn-outline-primary btn-sm mt-2" onclick="selectStore('sur')">Seleccionar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <div id="selectedStoreInfo" class="d-none">
+                                            <div class="alert alert-success">
+                                                <h6>✅ Sucursal Seleccionada</h6>
+                                                <p class="mb-1" id="storeName"></p>
+                                                <p class="mb-1" id="storeAddress"></p>
+                                                <p class="mb-0" id="storeHours"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Selección de horario -->
+                <div class="row mb-4 d-none" id="timeSelection">
+                    <div class="col-12">
+                        <div class="card border">
+                            <div class="card-header bg-light text-center">
+                                <h5 class="mb-0">⏰ Selecciona Horario de Retiro</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label class="form-label">Fecha de Retiro</label>
+                                        <input type="date" class="form-control" id="pickupDate" min="${new Date().toISOString().split('T')[0]}">
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label class="form-label">Hora de Retiro</label>
+                                        <select class="form-select" id="pickupTime">
+                                            <option value="">Selecciona una hora</option>
+                                            <!-- Las opciones de hora se cargarán dinámicamente -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="alert alert-info">
+                                            <small>💡 <strong>Recomendación:</strong> Tu pedido estará listo 20 minutos después de la hora seleccionada.</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información adicional -->
+                <div class="row mb-4">
+                    <div class="col-12 text-center small text-muted">
+                        <p>📞 ¿Necesitas ayuda? Llámanos al +56 9 1234 5678</p>
+                        <p>⏰ Horario de atención telefónica: Lunes a Domingo 9:00 - 21:00</p>
+                    </div>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="row">
+                    <div class="col-12 text-center d-flex flex-wrap justify-content-center gap-3">
+                        <a href="b12_editar_carrito.html" class="btn btn-outline-secondary">Modificar Pedido</a>
+                        <button class="btn btn-primary" id="confirmReservationBtn" onclick="confirmReservation()" disabled>Confirmar Reserva</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const stores = {
+            centro: {
+                name: "Sucursal Centro",
+                address: "Av. Principal 123, Santiago Centro",
+                hours: "Lun-Dom: 10:00-22:00",
+                preparation: 15
+            },
+            norte: {
+                name: "Sucursal Norte",
+                address: "Mall Plaza Norte, Local 45",
+                hours: "Lun-Dom: 10:00-22:00",
+                preparation: 25
+            },
+            sur: {
+                name: "Sucursal Sur",
+                address: "Costanera Center, Piso 3, Local 301",
+                hours: "Lun-Dom: 10:00-23:00",
+                preparation: 20
+            }
+        };
+
+        let selectedStore = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCartSummary();
+            generateTimeSlots();
+        });
+
+        function loadCartSummary() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            document.getElementById('cartItemsCount').textContent = `${itemCount} ${itemCount === 1 ? 'item' : 'items'}`;
+            document.getElementById('cartTotal').textContent = total.toLocaleString();
+        }
+
+        function selectStore(storeId) {
+            selectedStore = stores[storeId];
+            
+            // Actualizar UI
+            document.querySelectorAll('.store-card').forEach(card => {
+                card.classList.remove('border-primary');
+            });
+            document.querySelector(`[data-store="${storeId}"]`).classList.add('border-primary');
+            
+            // Mostrar información de la tienda seleccionada
+            document.getElementById('storeName').textContent = selectedStore.name;
+            document.getElementById('storeAddress').textContent = selectedStore.address;
+            document.getElementById('storeHours').textContent = selectedStore.hours;
+            document.getElementById('selectedStoreInfo').classList.remove('d-none');
+            
+            // Mostrar selección de horario
+            document.getElementById('timeSelection').classList.remove('d-none');
+            
+            // Habilitar botón de confirmación
+            document.getElementById('confirmReservationBtn').disabled = false;
+            
+            // Scroll a la sección de horario
+            document.getElementById('timeSelection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function generateTimeSlots() {
+            const timeSelect = document.getElementById('pickupTime');
+            timeSelect.innerHTML = '<option value="">Selecciona una hora</option>';
+            
+            // Generar horarios cada 30 minutos desde las 10:00 hasta las 21:30
+            for (let hour = 10; hour <= 21; hour++) {
+                for (let minute = 0; minute < 60; minute += 30) {
+                    if (hour === 21 && minute > 0) break; // Último horario a las 21:00
+                    
+                    const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+                    const option = document.createElement('option');
+                    option.value = timeString;
+                    option.textContent = timeString;
+                    timeSelect.appendChild(option);
+                }
+            }
+        }
+
+        function confirmReservation() {
+            const pickupDate = document.getElementById('pickupDate').value;
+            const pickupTime = document.getElementById('pickupTime').value;
+            
+            if (!pickupDate || !pickupTime) {
+                alert('Por favor selecciona fecha y hora de retiro');
+                return;
+            }
+            
+            if (!selectedStore) {
+                alert('Por favor selecciona una sucursal');
+                return;
+            }
+
+            // Crear objeto de reserva
+            const reservation = {
+                store: selectedStore,
+                pickupDate: pickupDate,
+                pickupTime: pickupTime,
+                order: JSON.parse(localStorage.getItem('cart')) || [],
+                reservationNumber: `RES-${Date.now().toString().slice(-6)}`,
+                createdAt: new Date().toISOString()
+            };
+            
+            // Guardar reserva en localStorage
+            localStorage.setItem('currentReservation', JSON.stringify(reservation));
+            
+            // Mostrar confirmación
+            alert(`✅ Reserva confirmada!\n\n📋 Número: ${reservation.reservationNumber}\n🏪 Sucursal: ${selectedStore.name}\n📅 Fecha: ${new Date(pickupDate).toLocaleDateString()}\n⏰ Hora: ${pickupTime}\n\n💡 Presenta este número al retirar tu pedido.`);
+            
+            // Redirigir a página de confirmación
+            window.location.href = 'b14_confirmacion_pago.html';
+        }
+
+        // Validar fecha mínima (hoy)
+        document.getElementById('pickupDate').min = new Date().toISOString().split('T')[0];
+    </script>
+</body>
+</html>
