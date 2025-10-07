@@ -1,48 +1,216 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Filtros Avanzados - Heladería Deliciosa</title>
+    <title>Filtros Avanzados - Frío Natural</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        .navbar-brand {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            margin-right: 2rem;
+        }
+        
+        .navbar-nav .nav-link {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+        }
+        
+        .btn-cart {
+            background-color: #FF6B6B;
+            border: 2px solid #FF6B6B;
+            color: white;
+            border-radius: 30px;
+            padding: 8px 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            text-decoration: none !important;
+        }
+        
+        .btn-cart:hover {
+            background-color: #e55a5a;
+            border-color: #e55a5a;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+            text-decoration: none;
+        }
+        
+        .custom-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+            background-color: #06D6A0;
+            color: white;
+            border-radius: 10px;
+            padding: 15px 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideInRight 0.5s ease-out;
+        }
+        
+        .custom-notification i {
+            font-size: 1.2rem;
+        }
+        
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .section-title {
+            position: relative;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+        
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, #4A90E2, #FF6B6B);
+            border-radius: 2px;
+        }
+        
         .filter-section {
             background: #f8f9fa;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 20px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
         }
+        
         .filter-option {
             cursor: pointer;
             transition: all 0.3s;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 5px;
         }
+        
         .filter-option:hover {
             background-color: #e9ecef;
         }
+        
         .filter-option.active {
             background-color: #0d6efd;
             color: white;
         }
+        
+        .product-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .product-image {
+            height: 180px;
+            width: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .filter-header {
+            background: linear-gradient(135deg, #4A90E2, #6B48FF);
+            color: white;
+            padding: 15px;
+            border-radius: 10px 10px 0 0;
+            margin-bottom: 15px;
+        }
+        
+        .filter-group {
+            margin-bottom: 15px;
+        }
+        
+        .filter-group-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #4A90E2;
+        }
+        
+        @media (max-width: 768px) {
+            .navbar-brand {
+                margin-right: 1rem;
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .navbar-brand {
+                font-size: 1.3rem;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="index.html">🍦 Heladería Deliciosa</a>
-            <div class="navbar-nav ms-auto">
-                <a href="b12_editar_carrito.html" class="btn btn-outline-light position-relative">
-                    🛒 Carrito
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartBadge">0</span>
-                </a>
+            <a class="navbar-brand" href="index.html">Frío Natural</a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="b04_catalogo.html">Catálogo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="b05_filtros.html">Búsqueda Avanzada</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="b07_promociones.html">Promociones</a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center">
+                    <div class="position-relative me-3">
+                        <a href="b12_editar_carrito.html" class="btn-cart position-relative">
+                            <i class="fas fa-shopping-cart"></i> Carrito
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning" id="cartBadge">0</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
 
-    <div class="container mt-4">
+    <div class="container mt-4 mb-5">
         <!-- Header -->
         <div class="row mb-4">
             <div class="col-12 text-center">
-                <h1 class="display-5 text-primary">Búsqueda Avanzada</h1>
+                <h1 class="display-5 text-primary section-title">Búsqueda Avanzada</h1>
                 <p class="text-muted">Encuentra tu helado ideal con nuestros filtros</p>
             </div>
         </div>
@@ -60,43 +228,61 @@
         <!-- Sección de filtros -->
         <div class="row mb-4">
             <div class="col-12">
-                <div class="card border shadow-sm">
+                <div class="card border-0 shadow-sm">
+                    <div class="filter-header">
+                        <h4 class="mb-0">Filtros Avanzados</h4>
+                    </div>
                     <div class="card-body">
                         <div class="row g-3">
                             <!-- Filtro por Sabor -->
-                            <div class="col-12 col-md-4">
-                                <label class="form-label fw-bold">Sabor Principal</label>
+                            <div class="col-12 col-md-6 col-lg-3">
                                 <div class="filter-section">
-                                    <div class="filter-option" data-filter="sabor" data-value="all">Todos los sabores</div>
+                                    <div class="filter-group-title">Sabor Principal</div>
+                                    <div class="filter-option active" data-filter="sabor" data-value="all">Todos los sabores</div>
                                     <div class="filter-option" data-filter="sabor" data-value="vainilla">Vainilla</div>
                                     <div class="filter-option" data-filter="sabor" data-value="chocolate">Chocolate</div>
                                     <div class="filter-option" data-filter="sabor" data-value="frutilla">Frutilla</div>
                                     <div class="filter-option" data-filter="sabor" data-value="menta">Menta</div>
                                     <div class="filter-option" data-filter="sabor" data-value="lucuma">Lúcuma</div>
+                                    <div class="filter-option" data-filter="sabor" data-value="dulce-de-leche">Dulce de Leche</div>
                                 </div>
                             </div>
                             
                             <!-- Filtro por Tipo -->
-                            <div class="col-12 col-md-4">
-                                <label class="form-label fw-bold">Tipo</label>
+                            <div class="col-12 col-md-6 col-lg-3">
                                 <div class="filter-section">
-                                    <div class="filter-option" data-filter="tipo" data-value="all">Todos los tipos</div>
+                                    <div class="filter-group-title">Tipo</div>
+                                    <div class="filter-option active" data-filter="tipo" data-value="all">Todos los tipos</div>
                                     <div class="filter-option" data-filter="tipo" data-value="cremoso">Cremoso</div>
                                     <div class="filter-option" data-filter="tipo" data-value="frutal">Frutal</div>
                                     <div class="filter-option" data-filter="tipo" data-value="chocolate">Chocolate</div>
                                     <div class="filter-option" data-filter="tipo" data-value="especial">Especial</div>
+                                    <div class="filter-option" data-filter="tipo" data-value="vegano">Vegano</div>
+                                    <div class="filter-option" data-filter="tipo" data-value="sin-azucar">Sin Azúcar</div>
                                 </div>
                             </div>
                             
                             <!-- Filtro por Tamaño -->
-                            <div class="col-12 col-md-4">
-                                <label class="form-label fw-bold">Tamaño</label>
+                            <div class="col-12 col-md-6 col-lg-3">
                                 <div class="filter-section">
-                                    <div class="filter-option" data-filter="tamaño" data-value="all">Todos los tamaños</div>
+                                    <div class="filter-group-title">Tamaño</div>
+                                    <div class="filter-option active" data-filter="tamaño" data-value="all">Todos los tamaños</div>
                                     <div class="filter-option" data-filter="tamaño" data-value="cono">Cono Individual</div>
                                     <div class="filter-option" data-filter="tamaño" data-value="medio">1/2 Litro</div>
                                     <div class="filter-option" data-filter="tamaño" data-value="litro">1 Litro</div>
                                     <div class="filter-option" data-filter="tamaño" data-value="dos-litros">2 Litros</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Filtro por Características Especiales -->
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="filter-section">
+                                    <div class="filter-group-title">Características</div>
+                                    <div class="filter-option" data-filter="caracteristicas" data-value="vegano">Vegano</div>
+                                    <div class="filter-option" data-filter="caracteristicas" data-value="sin-azucar">Sin Azúcar</div>
+                                    <div class="filter-option" data-filter="caracteristicas" data-value="sin-lactosa">Sin Lactosa</div>
+                                    <div class="filter-option" data-filter="caracteristicas" data-value="organico">Orgánico</div>
+                                    <div class="filter-option" data-filter="caracteristicas" data-value="premium">Premium</div>
                                 </div>
                             </div>
                         </div>
@@ -128,25 +314,61 @@
                 </div>
             </div>
         </div>
-
     </div>
+
+    <!-- Footer -->
+    <footer class="text-light py-5 bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>Frío Natural</h5>
+                    <p>Los mejores helados artesanales desde 2010.</p>
+                    <div class="social-icons mt-3">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Contacto</h5>
+                    <p>📍 Calle Principal 123, Ciudad</p>
+                    <p>📞 +56 9 1234 5678</p>
+                    <p>✉️ info@frio-natural.cl</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Horarios</h5>
+                    <p>Lunes a Viernes: 10:00 - 20:00</p>
+                    <p>Sábados y Domingos: 11:00 - 22:00</p>
+                    <div class="footer-links mt-3">
+                        <a href="b09_suscripcion.html" class="d-block text-light">Suscríbete a nuestras ofertas</a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <p class="text-center mb-0">&copy; 2025 Frío Natural. Todos los derechos reservados.</p>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const products = [
-            { id: 1, name: "Vainilla Premium", tipo: "cremoso", sabor: "vainilla", tamaño: ["medio", "litro"], price: 4990, image: "🍦" },
-            { id: 2, name: "Chocolate Suizo", tipo: "chocolate", sabor: "chocolate", tamaño: ["medio", "litro"], price: 5990, image: "🍫" },
-            { id: 3, name: "Frutilla Natural", tipo: "frutal", sabor: "frutilla", tamaño: ["medio", "litro"], price: 5490, image: "🍓" },
-            { id: 4, name: "Menta con Chocolate", tipo: "chocolate", sabor: "menta", tamaño: ["cono", "medio"], price: 5490, image: "🌿" },
-            { id: 5, name: "Lúcuma Tradicional", tipo: "cremoso", sabor: "lucuma", tamaño: ["litro", "dos-litros"], price: 5990, image: "🥭" },
-            { id: 6, name: "Cono Vainilla", tipo: "cremoso", sabor: "vainilla", tamaño: ["cono"], price: 1990, image: "🍦" },
-            { id: 7, name: "Combo Familiar", tipo: "especial", sabor: "mixed", tamaño: ["dos-litros"], price: 18990, image: "🎉" }
+            { id: 1, name: "Vainilla Premium", tipo: "cremoso", sabor: "vainilla", tamaño: ["medio", "litro"], caracteristicas: ["premium"], price: 4990, image: "HELADOS/vainilla-premium.png" },
+            { id: 2, name: "Chocolate Suizo", tipo: "chocolate", sabor: "chocolate", tamaño: ["medio", "litro"], caracteristicas: ["premium"], price: 5990, image: "HELADOS/chocolate-suizo.png" },
+            { id: 3, name: "Frutilla Natural", tipo: "frutal", sabor: "frutilla", tamaño: ["medio", "litro"], caracteristicas: ["organico"], price: 5490, image: "HELADOS/frutilla-natural.png" },
+            { id: 4, name: "Menta con Chocolate", tipo: "chocolate", sabor: "menta", tamaño: ["cono", "medio"], caracteristicas: [], price: 5490, image: "HELADOS/menta-chocolate.png" },
+            { id: 5, name: "Lúcuma Tradicional", tipo: "cremoso", sabor: "lucuma", tamaño: ["litro", "dos-litros"], caracteristicas: [], price: 5990, image: "HELADOS/lucuma-tradicional.png" },
+            { id: 6, name: "Cono Vainilla", tipo: "cremoso", sabor: "vainilla", tamaño: ["cono"], caracteristicas: [], price: 1990, image: "HELADOS/cono-vainilla.png" },
+            { id: 7, name: "Combo Familiar", tipo: "especial", sabor: "mixed", tamaño: ["dos-litros"], caracteristicas: [], price: 18990, image: "HELADOS/combo-familiar.png" },
+            { id: 8, name: "Helado Vegano de Coco", tipo: "vegano", sabor: "coco", tamaño: ["medio", "litro"], caracteristicas: ["vegano", "sin-lactosa"], price: 6490, image: "HELADOS/vegano-coco.png" },
+            { id: 9, name: "Helado Sin Azúcar", tipo: "sin-azucar", sabor: "vainilla", tamaño: ["medio", "litro"], caracteristicas: ["sin-azucar"], price: 5490, image: "HELADOS/sin-azucar.png" }
         ];
 
         let currentFilters = {
             sabor: 'all',
             tipo: 'all',
             tamaño: 'all',
+            caracteristicas: 'all',
             search: ''
         };
 
@@ -163,6 +385,13 @@
                     const filterType = this.getAttribute('data-filter');
                     const filterValue = this.getAttribute('data-value');
                     
+                    // Para características, permitir múltiples selecciones
+                    if (filterType === 'caracteristicas') {
+                        this.classList.toggle('active');
+                        return;
+                    }
+                    
+                    // Para otros filtros, selección única
                     // Remover activo de otras opciones del mismo tipo
                     document.querySelectorAll(`[data-filter="${filterType}"]`).forEach(opt => {
                         opt.classList.remove('active');
@@ -189,6 +418,12 @@
             const noResults = document.getElementById('sin-resultados');
             container.innerHTML = '';
             
+            // Obtener características seleccionadas
+            const selectedCharacteristics = [];
+            document.querySelectorAll('[data-filter="caracteristicas"].active').forEach(option => {
+                selectedCharacteristics.push(option.getAttribute('data-value'));
+            });
+            
             let filteredProducts = products.filter(product => {
                 const saborMatch = currentFilters.sabor === 'all' || product.sabor === currentFilters.sabor;
                 const tipoMatch = currentFilters.tipo === 'all' || product.tipo === currentFilters.tipo;
@@ -196,7 +431,15 @@
                 const searchMatch = !currentFilters.search || 
                     product.name.toLowerCase().includes(currentFilters.search.toLowerCase());
                 
-                return saborMatch && tipoMatch && tamañoMatch && searchMatch;
+                // Verificar características
+                let characteristicsMatch = true;
+                if (selectedCharacteristics.length > 0) {
+                    characteristicsMatch = selectedCharacteristics.every(char => 
+                        product.caracteristicas.includes(char)
+                    );
+                }
+                
+                return saborMatch && tipoMatch && tamañoMatch && searchMatch && characteristicsMatch;
             });
             
             if (filteredProducts.length === 0) {
@@ -209,12 +452,19 @@
             filteredProducts.forEach(product => {
                 const productCard = `
                     <div class="col-md-6 col-lg-4">
-                        <div class="card h-100 shadow-sm">
+                        <div class="card product-card h-100">
+                            <img src="${product.image}" alt="${product.name}" class="product-image">
                             <div class="card-body text-center">
-                                <div class="display-4 mb-3">${product.image}</div>
                                 <h5>${product.name}</h5>
                                 <p class="text-muted">${product.tipo.charAt(0).toUpperCase() + product.tipo.slice(1)} • ${product.tamaño.join(', ')}</p>
-                                <p class="fw-bold text-success">$${product.price.toLocaleString()}</p>
+                                ${product.caracteristicas.length > 0 ? 
+                                    `<div class="mb-2">
+                                        ${product.caracteristicas.map(char => 
+                                            `<span class="badge bg-info me-1">${char}</span>`
+                                        ).join('')}
+                                    </div>` : ''
+                                }
+                                <p class="h4 text-primary">$${product.price.toLocaleString()}</p>
                                 <button class="btn btn-outline-primary" onclick="addToCart(${product.id}, '${product.name}', ${product.price})">
                                     Agregar al Carrito
                                 </button>
@@ -235,6 +485,7 @@
                 sabor: 'all',
                 tipo: 'all',
                 tamaño: 'all',
+                caracteristicas: 'all',
                 search: ''
             };
             
@@ -266,13 +517,28 @@
             
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCartBadge();
-            alert(`¡${name} agregado al carrito!`);
+            showNotification(`${name} agregado al carrito`);
         }
 
         function updateCartBadge() {
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             document.getElementById('cartBadge').textContent = totalItems;
+        }
+        
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'custom-notification';
+            notification.innerHTML = `
+                <i class="fas fa-check-circle"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
         }
     </script>
 </body>
